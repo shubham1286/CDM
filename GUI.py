@@ -16,33 +16,34 @@
 import sys,inspect
 from PyQt4 import QtGui,QtCore
 import os
-from source import *
-import source
-
+from SOURCE import *
+import SOURCE
 class Example(QtGui.QWidget):
         
         def __init__(self):
 
                 super(Example, self).__init__()
 
-                self.dd=source.app()
+                self.dd=SOURCE.app()
 
-                self.obj=source.app()
+                self.obj=SOURCE.app()
 
                 self.initUI()
                 
         def initUI(self):               
                 self.text=""
-               
+
+                palette = QtGui.QPalette()
+
                 self.setGeometry(300, 300, 250, 150)        
                        
                 self.setWindowTitle('  CODE DOWNLOAD MANAGER  ')
 
                 self.btn = QtGui.QPushButton('Submit', self)
 
-                self.btn.resize(self.btn.sizeHint())
+                self.btn.resize(100,20)
 
-                self.btn.move(630, 350)
+                self.btn.move(660, 350)
 
                 lbl1 = QtGui.QLabel(' CODE DOWNLOAD MANAGER ', self)
 
@@ -56,9 +57,17 @@ class Example(QtGui.QWidget):
 
                 lbl1.setFont(font)
 
+                palette.setColor(QtGui.QPalette.Foreground,QtCore.Qt.red)
+
+                lbl1.setPalette(palette)
+
                 lbl2 = QtGui.QLabel(' Enter URL: ', self)
 
                 lbl2.move(450, 300)
+
+                palette.setColor(QtGui.QPalette.Foreground,QtCore.Qt.red)
+
+                lbl2.setPalette(palette)
 
                 font.setBold(True)
                 
@@ -66,21 +75,18 @@ class Example(QtGui.QWidget):
 
                 lbl2.setFont(font)
 
+                lbl2.show()
+
                 self.le = QtGui.QLineEdit(self)
 
                 self.le.move(610, 300)
 
                 self.le.resize(300, 20)
 
-                #self.center()
+                palette.setColor(QtGui.QPalette.Background,QtCore.Qt.black)
 
-                self.btn2 = QtGui.QPushButton(' Click to check status ', self)
-
-                self.btn2.move(580, 420)
-
-                self.btn2.resize(175,25)
-
-                self.btn2.clicked.connect(self.timerEvent)
+                self.setPalette(palette)
+              
 
                 self.timer = QtCore.QBasicTimer()
 
@@ -89,7 +95,7 @@ class Example(QtGui.QWidget):
                 self.setGeometry(640, 440, 280, 170)
                 
                 
-                self.setWindowIcon(QtGui.QIcon('web.png')) 
+               # self.setWindowIcon(QtGui.QIcon('web.png')) 
 
                 self.showMaximized()
 
@@ -125,37 +131,36 @@ class Example(QtGui.QWidget):
                 if reply == QtGui.QMessageBox.Yes:
                         event.accept()
                 else:
-                        event.ignore()        
-        
-
-
-        def timerEvent(self, e):
+                        event.ignore()  
           
-                global ff
-
-                global gg
-
-                (ff,gg)=self.obj.func()
-
-                if(gg!=0):
-                   self.step = ((ff + 1)/(gg))*100
-
-                if self.step >= 100:
-                        
-                        self.timer.stop()
-
-                        self.btn2.setText(' Download Completed ')
-
-                        return
-                
-                else:
-                     self.btn2.setText(' Error in Download ')     
+                    
 
 
         
         def cdm(self):
+                   global ff,gg
+                   
+                   self.filename = QtGui.QFileDialog.getSaveFileName(self, "Save file", "", "")
+                      
                    self.text=self.le.text()          
-                   self.dd.cdm1(self.text)
+
+                   (ff,gg)=self.dd.cdm1(self.text,self.filename)
+
+                   if(gg!=0):
+                      self.step = ((ff + 1)/(gg))*100
+
+                   print self.step   
+
+                   if self.step >= 100:
+                        
+                        self.timer.stop()
+                        QtGui.QMessageBox.information(self,"Status of Download","CODE HAS BEEN SUCCESSFULLY DOWNLOADED :)")
+
+                        return
+                
+                   else:
+                       QtGui.QMessageBox.information(self,"Status of Download"," ERROR IN DOWNLOAD DUE TO NETWORK PROBLEM :(")
+                       return
                    
 
 
