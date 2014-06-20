@@ -18,7 +18,7 @@ WORKING WITH CDM:
 
 2.After this a window will pop-out ,provide the location where you want to save the code.
 
-2.When download complete, you can view the saved file in the  given location .
+3.When download complete, you can view the saved file in the  given location .
 
 NOTE:
 
