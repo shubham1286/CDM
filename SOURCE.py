@@ -1,20 +1,34 @@
 from bs4 import BeautifulSoup
+
 import urllib2
+
 from urllib2 import urlopen, URLError
+
 import re
+
 import csv
+
 import unicodedata
+
 import codecs
+
 import os
+
 import sys
+
 vv=0
+
 tempo=0
+
 total=0
+
 class app():
     
    
    def cdm1(self,text,filename):
 
+       
+        
         req=urllib2.Request(str(text))
 
         try: ss=urllib2.urlopen(str(text))
@@ -61,6 +75,7 @@ class app():
                  self.kkk=0
                 
                  out=open(filename,"w")
+                 out.write("// it's a scrapped code by CDM!!!!\n\n")
 
               if "viewplaintext" in oo:
 
@@ -107,6 +122,8 @@ class app():
         else:
           output = open(filename,'w')
 
+          output.write("// it's a scrapped code by CDM!!!!\n\n")
+
           global tempo
 
           self.temp=0
@@ -120,12 +137,19 @@ class app():
 
                line=link.get_text().encode('UTF-8')
 
-               if 'comments' in line:
-                 break
-
+               
                self.temp=self.temp+len(line)
 
                tempo=self.temp
+               
+               if 'comments' in line:
+                 break
+               if 'GeeksQuiz'in line:
+                 continue
+
+               if 'Login' in line:
+                 continue
+
                
         
 
@@ -139,12 +163,25 @@ class app():
                
                vv=self.hh
 
-               if 'comments' in line:
-                 break
+               s_plit=str(line).split("\ ; .")
 
-               output.write(line)
-               
-               output.write("\n\n")
+               for no in s_plit:
+
+                  if 'comments' in no:
+
+                     break;
+
+                  if 'GeeksQuiz'in line:
+                     continue
+
+                  if 'Login' in line:
+                     continue
+
+                  output.write(no)
+
+                  output.write("\n\n")
+
+            
 
           return (vv,tempo) 
         

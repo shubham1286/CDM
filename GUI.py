@@ -1,6 +1,7 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 '''
- -*- coding: utf-8 -*-
 
 # to extract the code and explanation part of an algorithm 
 
@@ -8,175 +9,160 @@
 
 # used beautifulsoup
 
-# used pyqt for interface
+# used Tkinter for interface
 
 # utf-8 encoding is done 
 
 '''
-import sys,inspect
-from PyQt4 import QtGui,QtCore
-import os
-from SOURCE import *
+from PIL import Image, ImageTk
+
+from Tkinter import Tk, Label, BOTH,TOP,Text,W,N,E,S,END
+
+from ttk import  Style,Button,Frame
+
+import tkFileDialog
+
+import tkMessageBox
+
 import SOURCE
-class Example(QtGui.QWidget):
+
+from SOURCE import *
+
+import sys,inspect,time
+
+class Example(Frame):
+  
+    def __init__(self, parent):
+
+        Frame.__init__(self, parent)   
+         
+        self.parent = parent
+
+        self.dd=SOURCE.app()
         
-        def __init__(self):
-
-                super(Example, self).__init__()
-
-                self.dd=SOURCE.app()
-
-                self.obj=SOURCE.app()
-
-                self.initUI()
-                
-        def initUI(self):               
-                self.text=""
-
-                palette = QtGui.QPalette()
-
-                self.setGeometry(300, 300, 250, 150)        
-                       
-                self.setWindowTitle('  CODE DOWNLOAD MANAGER  ')
-
-                self.btn = QtGui.QPushButton('Submit', self)
-
-                self.btn.resize(100,20)
-
-                self.btn.move(660, 350)
-
-                lbl1 = QtGui.QLabel(' CODE DOWNLOAD MANAGER ', self)
-
-                lbl1.move(500, 100)
-
-                font=QtGui.QFont();
-
-                font.setBold(True)
-                
-                font.setPointSize(20)
-
-                lbl1.setFont(font)
-
-                palette.setColor(QtGui.QPalette.Foreground,QtCore.Qt.red)
-
-                lbl1.setPalette(palette)
-
-                lbl2 = QtGui.QLabel(' Enter URL: ', self)
-
-                lbl2.move(450, 300)
-
-                palette.setColor(QtGui.QPalette.Foreground,QtCore.Qt.red)
-
-                lbl2.setPalette(palette)
-
-                font.setBold(True)
-                
-                font.setPointSize(15)
-
-                lbl2.setFont(font)
-
-                lbl2.show()
-
-                self.le = QtGui.QLineEdit(self)
-
-                self.le.move(610, 300)
-
-                self.le.resize(300, 20)
-
-                palette.setColor(QtGui.QPalette.Background,QtCore.Qt.black)
-
-                self.setPalette(palette)
-              
-
-                self.timer = QtCore.QBasicTimer()
-
-                self.step = 0
-                
-                self.setGeometry(640, 440, 280, 170)
-                
-                
-               # self.setWindowIcon(QtGui.QIcon('web.png')) 
-
-                self.showMaximized()
-
-                self.btn.clicked.connect(self.cdm)
-
-                self.show()
+        self.initUI()
+   
+    def initUI(self):
+        
+        root.protocol("WM_DELETE_WINDOW", self.handler)
         
 
-        def showDialog(self):
-                
-                self.text,ok = QtGui.QInputDialog.getText(self, 'Input box', 
-                        'Enter URL:')
+       # window=Tkinter.Tk()
 
-                if ok:
-                        self.le.setText(str(self.text))
-                                          
-                
-           
-        def center(self):
-                
-                qr = self.frameGeometry()
+        self.parent.title("Code Download Manager")
 
-                cp = QtGui.QDesktopWidget().availableGeometry().center()
+        self.pack(fill=BOTH, expand=1)
 
-                qr.moveCenter(cp)
-                       
-        def closeEvent(self, event):
-                
-                reply = QtGui.QMessageBox.question(self, 'Message',
-                        "Are you sure to quit?", QtGui.QMessageBox.Yes | 
-                        QtGui.QMessageBox.No, QtGui.QMessageBox.No)
+        self.centerWindow()
 
-                if reply == QtGui.QMessageBox.Yes:
-                        event.accept()
-                else:
-                        event.ignore()  
-          
-                    
+        style = Style()
+
+       # style.configure("TFrame", background="#333")
+
+        bard = Image.open("globe.jpg")
+
+        bardejov = ImageTk.PhotoImage(bard)
+
+        label1 = Label(self, image=bardejov)
+
+        label1.image = bardejov
+
+        label1.place(x=0,y=0)
+
+     
 
 
-        
-        def cdm(self):
+        self.b=Button(self, text="SUBMIT",command=self.cdm1)
+
+        self.b.place(x=640,y=330)
+
+        self.lbl = Label(self, text="ENTER URL : ",fg="black",bg="green", font="Times 12 bold")
+
+        self.lbl.place(x=420,y=297)
+
+        self.area = Text(self)
+
+        self.area.place(x=550,y=300,width=300, height=20)
+
+        self.lb2 = Label(self, text="  CODE DOWNLOAD MANAGER ",fg="black",bg="white" ,font="Times 20 bold",anchor="center")
+
+        self.lb2.place(x=450,y=60)
+
+       # window.mainloop()
+        root.wm_iconbitmap('dsf.ico')
+
+    def centerWindow(self):
+
+        sw = self.parent.winfo_screenwidth()
+
+        sh = self.parent.winfo_screenheight()
+
+       # print sw
+
+        #print sh
+
+        self.parent.geometry('%dx%d+%d+%d' % (sw, sh, 0, 0))
+
+
+    def handler(self):
+
+      if tkMessageBox.askokcancel("Quit?", "Are you sure you want to quit?"):
+
+         root.destroy()
+
+
+    def cdm1(self):
+
+                   self.file_opt = options = {}
+
+                   self.text= self.area.get("0.0",END)
+
+
                    global ff,gg
+
                    
-                   self.filename = QtGui.QFileDialog.getSaveFileName(self, "Save file", "", "")
+                   self.filename =tkFileDialog.asksaveasfilename(**self.file_opt)
+
+#                   print self.filename
                       
-                   self.text=self.le.text()          
 
                    (ff,gg)=self.dd.cdm1(self.text,self.filename)
 
-                   if(gg!=0):
-                      self.step = ((ff + 1)/(gg))*100
 
-                   print self.step   
+                   self.step=0
+       
+
+                   if(gg!=0):
+
+                      self.step = ((ff + 1)/(gg))*100
+   
 
                    if self.step >= 100:
                         
-                        self.timer.stop()
-                        QtGui.QMessageBox.information(self,"Status of Download","CODE HAS BEEN SUCCESSFULLY DOWNLOADED :)")
+                      #  self.timer.stop()
+
+                        tkMessageBox.showinfo("Status of Download","CODE HAS BEEN SUCCESSFULLY DOWNLOADED :)")
 
                         return
                 
                    else:
-                       QtGui.QMessageBox.information(self,"Status of Download"," ERROR IN DOWNLOAD DUE TO NETWORK PROBLEM :(")
-                       return
-                   
-
-
- 
-
-
-
-                
-def main():
+                        tkMessageBox.showinfo("Status of Download"," ERROR IN DOWNLOAD DUE TO NETWORK PROBLEM :(")
+                        return
+                     
         
-        app = QtGui.QApplication(sys.argv)
+def main():
+    global root
 
-        ex = Example()
+    root = Tk()
 
-        sys.exit(app.exec_())
+    root.geometry("280x170+640+440")
+
+    app = Example(root)
+
+    root.mainloop()  
 
 
 if __name__ == '__main__':
-        main()
+    
+    main()
+
