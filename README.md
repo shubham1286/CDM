@@ -29,6 +29,6 @@ NOTE:
 
 LANGUAGE:Python
 
-PACKAGE:PyQt4(QtCore,QtGui),BeautifulSoup4,urllib,PyInstaller.
+PACKAGE:Tkinter(Image,ImageTk,tkFileDialog,tkMessageBox),BeautifulSoup4,urllib,Py2exe.
 
    
