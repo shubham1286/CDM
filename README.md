@@ -3,7 +3,7 @@ CDM
 
 A simple download manager to extract explanation to numerous algorithms from various coding blogs/websites.
 
-CODE DOWNLOAD MANAGER:
+CODE DOWNLOAD MANAGER(64 bit):
 
 INTRODUCTION:
 
