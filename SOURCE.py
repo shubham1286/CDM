@@ -22,6 +22,7 @@ tempo=0
 
 total=0
 
+flag=1
 class app():
     
    
@@ -153,11 +154,14 @@ class app():
                
         
 
+          self.flag=1
 
           for link in soup.findAll(re.compile("^p")):
                
                line=link.get_text().encode('UTF-8')
-               
+
+               if(self.flag==0):
+                   break
                 
                self.hh=self.hh+len(line)
                
@@ -168,13 +172,13 @@ class app():
                for no in s_plit:
 
                   if 'comments' in no:
-
+                     self.flag=0
                      break;
 
-                  if 'GeeksQuiz'in line:
+                  if 'GeeksQuiz'in no:
                      continue
 
-                  if 'Login' in line:
+                  if 'Login' in no:
                      continue
 
                   output.write(no)
@@ -182,7 +186,6 @@ class app():
                   output.write("\n\n")
 
             
-
           return (vv,tempo) 
         
 
